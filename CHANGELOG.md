@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.2.0](https://github.com/AgtorsLi/EcoPaste/releases/tag/v1.2.0) (2026-11-02)
+
+Based on upstream master at [v1.1.1-nightly.20260813.1](https://github.com/EcoPasteHub/EcoPaste/releases/tag/v1.1.1-nightly.20260813.1). Features summarizes that nightly; Bug Fixes records this patch.
+
+### ✨ Features
+
+- Expand email local-part recognition to support `. _ + - %` characters ([#1403](https://github.com/EcoPasteHub/EcoPaste/pull/1403)).
+- Detect sensitive values under quoted JSON-style keys ([#1408](https://github.com/EcoPasteHub/EcoPaste/pull/1408)).
+- Fall back to LIKE queries for search keywords containing short tokens ([#1407](https://github.com/EcoPasteHub/EcoPaste/pull/1407)).
+- Preserve sensitive flags when merging imported backups ([#1404](https://github.com/EcoPasteHub/EcoPaste/pull/1404)).
+
+### 🐛 Bug Fixes
+
+- Fix repeated Windows login UAC prompts when autostart and administrator launch are enabled.
+- Preserve `--auto-launch` using a dedicated elevation helper so duplicate launches stay silent; retain ordinary launch and backup-path argument behavior.
+
 ## [1.1.0](https://github.com/EcoPasteHub/EcoPaste/compare/v1.0.0...v1.1.0) (2026-07-22)
 
 ### ✨ Features

@@ -1,5 +1,21 @@
 # 更新日志
 
+## [1.2.0](https://github.com/AgtorsLi/EcoPaste/releases/tag/v1.2.0) (2026-11-02)
+
+基于上游 master 分支的 [v1.1.1-nightly.20260813.1](https://github.com/EcoPasteHub/EcoPaste/releases/tag/v1.1.1-nightly.20260813.1)。以下 Features 汇总该 nightly 的四项变更；Bug fixes 记录本次修复。
+
+### ✨ 新功能
+
+- 扩展邮箱地址识别，支持本地部分中的 `. _ + - %` 字符（[#1403](https://github.com/EcoPasteHub/EcoPaste/pull/1403)）。
+- 支持识别带引号的 JSON 风格键名中的敏感信息（[#1408](https://github.com/EcoPasteHub/EcoPaste/pull/1408)）。
+- 搜索包含短词的关键词时回退到 LIKE 查询，改善搜索结果（[#1407](https://github.com/EcoPasteHub/EcoPaste/pull/1407)）。
+- 合并导入备份时保留敏感信息标记（[#1404](https://github.com/EcoPasteHub/EcoPaste/pull/1404)）。
+
+### 🐛 问题修复
+
+- 修复 Windows 开启开机启动和管理员运行后，每次登录重复弹出 UAC 授权的问题。
+- 使用独立提权辅助任务保留 `--auto-launch` 参数，避免提权后重复实例唤出设置窗口；普通启动与备份路径参数继续保留原有行为。
+
 ## [1.1.0](https://github.com/EcoPasteHub/EcoPaste/compare/v1.0.0...v1.1.0) (2026-07-22)
 
 ### ✨ 新功能

@@ -556,11 +556,15 @@ not a frontend-only permission prompt.
   syncs the highest-privilege scheduled task and continues startup.
 - If `runAsAdmin=true` and the process is not elevated, Rust tries to launch an
   elevated process and exits the unelevated process only after launch succeeds.
-- Relaunch prefers a valid scheduled task only when current arguments are safe
-  for the static task action, meaning no external arguments beyond the internal
-  restart marker. Dynamic arguments such as file-open backup paths or
-  `--auto-launch` fall back to `ShellExecuteW` with the `runas` verb so they can
-  be preserved.
+- Ordinary relaunch uses `EcoPasteAdmin` with the internal restart marker.
+  Autostart uses `EcoPasteAdminAutoLaunch` with that marker and `--auto-launch`,
+  preserving silent secondary-instance handling. Both are on-demand helpers,
+  not login triggers; the existing Run entry still owns autostart.
+- Both helpers are synced by an elevated process and removed when administrator
+  launch is disabled. `taskReady` requires both helpers.
+- Unknown flags and external arguments such as backup paths retain the UAC path
+  so no dynamic arguments are dropped. A missing helper or stale executable path
+  also falls back to UAC; the authorized process then provisions both helpers.
 - React renders `AdminLaunchStatus` and sends user intent through command
   wrappers. It must not call Windows APIs or infer token elevation itself.
 
@@ -571,7 +575,7 @@ not a frontend-only permission prompt.
   `administrator permission request was cancelled or failed`; current process
   remains open.
 - Scheduled task path mismatch -> task is not considered ready; fallback to UAC.
-- `set_run_as_admin(false)` while elevated -> Rust deletes the scheduled task
+- `set_run_as_admin(false)` while elevated -> Rust deletes both helper tasks
   best-effort after settings update.
 - Early settings or storage manifest read failure -> auto-elevation is skipped
   and normal startup continues.
@@ -590,7 +594,9 @@ not a frontend-only permission prompt.
 ### 6. Tests Required
 
 - Backend: unit-test Windows command-line quoting for scheduled task / UAC
-  arguments.
+  arguments; assert autostart selects its own helper with both internal flags,
+  ordinary launch keeps the original helper, and backup paths/unknown flags
+  never select either static helper.
 - Backend: `cargo clippy -- -D warnings` must pass on Windows-specific code.
 - Backend: `cargo test` must include settings default coverage for
   `general.run_as_admin`.
